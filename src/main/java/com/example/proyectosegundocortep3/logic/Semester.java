@@ -13,6 +13,12 @@ public class Semester {
         this.finalScore = finalScore;
     }
 
+    public Semester(int id, Double finalScore) {
+        this.id = id;
+        this.subjects = new ArrayList<>();
+        this.finalScore = finalScore;
+    }
+
     public int getId() {
         return id;
     }

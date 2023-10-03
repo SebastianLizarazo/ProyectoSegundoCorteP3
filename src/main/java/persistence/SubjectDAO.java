@@ -1,5 +1,6 @@
 package persistence;
 
+import com.example.proyectosegundocortep3.logic.Semester;
 import com.example.proyectosegundocortep3.logic.Subject;
 
 import java.sql.*;
@@ -31,12 +32,18 @@ public class SubjectDAO implements InterfaceDAO<Subject> {
             List<Subject> list = new ArrayList<>();
 
             while (rs.next()){
-                Integer id = rs.getInt("idSubject");
+                Integer id = rs.getInt("idsubject");
                 String name = rs.getString("name");
                 Double finalScore = rs.getDouble("finalScore");
+                int idSemester = rs.getInt("semester_idsemester");
 
+                String searchSemesterQuery = "SELECT * FROM semester WHERE id='" + idSemester + "'";
+                ResultSet rs2 = statement.executeQuery( searchSemesterQuery );
+                Double semesterFinalScore = rs2.getDouble("finalScore");
 
-                list.add( new Subject(id,name,finalScore));
+                Semester semester =new Semester(idSemester,semesterFinalScore);
+
+                list.add( new Subject(id,name,finalScore,semester));
             }
             return list;
         }catch (SQLException e){
@@ -45,13 +52,68 @@ public class SubjectDAO implements InterfaceDAO<Subject> {
     }
 
     @Override
-    public Subject findById(Integer id) {
-        return null;
+    public Subject findById(Integer idFind) {
+        try{
+            Class.forName(DRIVER);
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        try(
+                Connection connection = DriverManager.getConnection(URL, USER,PASSWORD);
+                Statement statement = connection.createStatement();
+        ){
+            String query = "SELECT * FROM subject WHERE id='" + idFind + "'";
+            ResultSet rs = statement.executeQuery( query );
+            Subject subject = null;
+
+            while (rs.next()){
+                Integer id = rs.getInt("idsubject");
+                String name = rs.getString("name");
+                Double finalScore = rs.getDouble("finalScore");
+                int idSemester = rs.getInt("semester_idsemester");
+
+                String searchSemesterQuery = "SELECT * FROM semester WHERE id='" + idSemester + "'";
+                ResultSet rs2 = statement.executeQuery( searchSemesterQuery );
+                Double semesterFinalScore = rs2.getDouble("finalScore");
+
+                Semester semester =new Semester(idSemester,semesterFinalScore);
+
+                subject = new Subject(id,name,finalScore,semester);
+            }
+
+            return subject;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public boolean add(Subject object) {
-        return false;
+    public boolean add(Subject subject) {
+
+        String name = subject.getName();
+
+        Double finalScore = subject.getFinalScore();
+
+        int semesterIdSemester = 1;
+
+        try{
+            Class.forName(DRIVER);
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        try(
+                Connection connection = DriverManager.getConnection(URL, USER,PASSWORD);
+                Statement statement = connection.createStatement();
+        ){
+            String query = "INSERT INTO subject VALUES('" + name  + "','" + finalScore + "','" + semesterIdSemester + "')";
+
+            int rows = statement.executeUpdate( query );
+
+            return rows > 0 ? true : false;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
