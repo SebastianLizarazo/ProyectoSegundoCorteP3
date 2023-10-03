@@ -12,6 +12,9 @@ public class Semester {
         this.subjects = subjects;
         this.finalScore = finalScore;
     }
+    public Semester() {
+
+    }
 
     public Semester(int id, Double finalScore) {
         this.id = id;

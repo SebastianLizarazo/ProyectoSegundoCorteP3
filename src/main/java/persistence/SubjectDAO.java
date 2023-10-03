@@ -32,16 +32,18 @@ public class SubjectDAO implements InterfaceDAO<Subject> {
             List<Subject> list = new ArrayList<>();
 
             while (rs.next()){
-                Integer id = rs.getInt("idsubject");
-                String name = rs.getString("name");
-                Double finalScore = rs.getDouble("finalScore");
-                int idSemester = rs.getInt("semester_idsemester");
+                Integer id = rs.getInt(1);
+                String name = rs.getString(2);
+                Double finalScore = rs.getDouble(3);
+                //int idSemester = rs.getInt("semester_idsemester");
 
-                String searchSemesterQuery = "SELECT * FROM semester WHERE id='" + idSemester + "'";
+                /*
+                String searchSemesterQuery = "SELECT * FROM semester WHERE idSemester ='" + idSemester + "'";
                 ResultSet rs2 = statement.executeQuery( searchSemesterQuery );
                 Double semesterFinalScore = rs2.getDouble("finalScore");
+                 */
 
-                Semester semester =new Semester(idSemester,semesterFinalScore);
+                Semester semester =new Semester();
 
                 list.add( new Subject(id,name,finalScore,semester));
             }
@@ -71,13 +73,9 @@ public class SubjectDAO implements InterfaceDAO<Subject> {
                 Integer id = rs.getInt("idsubject");
                 String name = rs.getString("name");
                 Double finalScore = rs.getDouble("finalScore");
-                int idSemester = rs.getInt("semester_idsemester");
+                //int idSemester = rs.getInt("semester_idsemester");
 
-                String searchSemesterQuery = "SELECT * FROM semester WHERE id='" + idSemester + "'";
-                ResultSet rs2 = statement.executeQuery( searchSemesterQuery );
-                Double semesterFinalScore = rs2.getDouble("finalScore");
-
-                Semester semester =new Semester(idSemester,semesterFinalScore);
+                Semester semester =new Semester();
 
                 subject = new Subject(id,name,finalScore,semester);
             }
@@ -106,7 +104,7 @@ public class SubjectDAO implements InterfaceDAO<Subject> {
                 Connection connection = DriverManager.getConnection(URL, USER,PASSWORD);
                 Statement statement = connection.createStatement();
         ){
-            String query = "INSERT INTO subject VALUES('" + name  + "','" + finalScore + "','" + semesterIdSemester + "')";
+            String query = "INSERT INTO subject VALUES('"+ 0 + "','" + name  + "','" + finalScore + "','" + semesterIdSemester + "')";
 
             int rows = statement.executeUpdate( query );
 

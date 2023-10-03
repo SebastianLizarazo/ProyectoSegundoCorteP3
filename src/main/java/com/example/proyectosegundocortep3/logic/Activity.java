@@ -22,6 +22,16 @@ public class Activity {
         this.subject = subject;
     }
 
+    public Activity(int id, String activityType, Double weighted, LocalDate deadLine, Double score, String state) {
+        this.id = id;
+        this.activityType = activityType;
+        this.weighted = weighted;
+        this.deadLine = deadLine;
+        this.score = score;
+        this.state = state;
+        this.subject = new Subject();
+    }
+
     public int getId() {
         return id;
     }

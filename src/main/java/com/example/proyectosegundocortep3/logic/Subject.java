@@ -9,7 +9,8 @@ public class Subject {
 
     private Semester semester;
 
-
+    public Subject() {
+    }
 
     public Subject(int id, String name, Double finalScore) {
         this.id = id;
@@ -32,6 +33,12 @@ public class Subject {
         this.finalScore = finalScore;
     }
 
+    public Subject(String name) {
+        this.name = name;
+        this.numActivities = 0;
+        this.finalScore = 0.0;
+        this.semester = new Semester();
+    }
     public int getId() {
         return id;
     }
