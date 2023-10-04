@@ -1,8 +1,6 @@
 (()=>{
     const tbodySubjects = document.getElementById("tBodySubjects")
 
-    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dec']
-
     const xhr = new XMLHttpRequest()
 
     xhr.open("GET","servlet-subject",true )
@@ -27,7 +25,10 @@
                 row.appendChild( colfinalScore )
 
                 const colOptions = document.createElement("td")
-                colOptions.appendChild( document.createTextNode("----"))
+                const buttonSee = document.createElement('button');
+                buttonSee.appendChild(document.createTextNode('Ver'))
+                buttonSee.addEventListener('click',()=>showActivities(subject.id))
+                colOptions.appendChild( buttonSee)
                 row.appendChild( colOptions )
 
                 tbodySubjects.appendChild(row)
@@ -70,7 +71,10 @@ document.getElementById('btnCreateSubject').addEventListener('click',()=>{
                 row.appendChild( colfinalScore )
 
                 const colOptions = document.createElement("td")
-                colOptions.appendChild( document.createTextNode("----"))
+                const buttonSee = document.createElement('button');
+                buttonSee.appendChild(document.createTextNode('Ver'))
+                buttonSee.addEventListener('click',()=>showActivities(subject.id))
+                colOptions.appendChild( buttonSee)
                 row.appendChild( colOptions )
 
                 tbodySubjects.appendChild(row)
@@ -85,3 +89,54 @@ document.getElementById('btnCreateSubject').addEventListener('click',()=>{
     const data = `nameSubject=${nameSubject}`
     xhr.send(data)
 })
+
+// Esta función se encargará de mostrar las actividades de la materia correspondiente en la tabla de actividades.
+function showActivities(subjectId) {
+    const tbodyActivities = document.getElementById("tBodyActivities");
+    //tbodyActivities.innerHTML = "";
+
+    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dec']
+
+    const xhr2 = new XMLHttpRequest()
+
+    xhr2.open("GET","servlet-activity",true )
+
+    xhr2.onreadystatechange = ()=>{
+
+        if( xhr2.readyState === 4 && xhr2.status === 200 ){
+            const activities = JSON.parse( xhr.responseText )
+            activities.forEach( activity => {
+                const row = document.createElement("tr")
+
+                const colActivityType = document.createElement("td")
+                colActivityType.appendChild( document.createTextNode( activity.activityType ) );
+                row.appendChild( colActivityType )
+
+                const colWeighted = document.createElement("td")
+                colWeighted.appendChild( document.createTextNode(activity.weighted ))
+                row.appendChild( colWeighted )
+
+                const colDeadLine = document.createElement("td")
+                colDeadLine.appendChild( document.createTextNode(activity.deadLine))
+                row.appendChild( colDeadLine )
+
+                const colScore = document.createElement("td")
+                colScore.appendChild( document.createTextNode(activity.score))
+                colScore.appendChild( colDeadLine )
+
+                const colState = document.createElement("td")
+                colState.appendChild( document.createTextNode(activity.state))
+                colState.appendChild( colDeadLine )
+
+                tbodyActivities.appendChild(row)
+            })
+        }else {
+            alert("hola")
+        }
+    }
+
+    xhr2.send()
+}
+
+
+

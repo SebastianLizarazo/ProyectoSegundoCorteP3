@@ -10,16 +10,16 @@ public class Activity {
     private Double score;
     private String state;
 
-    private Subject subject;
+    private int idSubject;
 
-    public Activity(int id, String activityType, Double weighted, LocalDate deadLine, Double score, String state, Subject subject) {
+    public Activity(int id, String activityType, Double weighted, LocalDate deadLine, Double score, String state, int idSubject) {
         this.id = id;
         this.activityType = activityType;
         this.weighted = weighted;
         this.deadLine = deadLine;
         this.score = score;
         this.state = state;
-        this.subject = subject;
+        this.idSubject = idSubject;
     }
 
     public Activity(int id, String activityType, Double weighted, LocalDate deadLine, Double score, String state) {
@@ -29,7 +29,7 @@ public class Activity {
         this.deadLine = deadLine;
         this.score = score;
         this.state = state;
-        this.subject = new Subject();
+        this.idSubject = 0;
     }
 
     public int getId() {
@@ -80,24 +80,13 @@ public class Activity {
         this.state = state;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public int getIdSubject() {
+        return idSubject;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setIdSubject(int idSubject) {
+        this.idSubject = idSubject;
     }
 
-    @Override
-    public String toString() {
-        return "Activity{" +
-                "id=" + id +
-                ", activityType='" + activityType + '\'' +
-                ", weighted=" + weighted +
-                ", deadLine=" + deadLine +
-                ", score=" + score +
-                ", state='" + state + '\'' +
-                ", subject=" + subject +
-                '}';
-    }
+
 }

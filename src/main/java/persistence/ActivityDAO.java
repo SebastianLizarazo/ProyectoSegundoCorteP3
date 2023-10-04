@@ -33,32 +33,17 @@ public class ActivityDAO implements InterfaceDAO<Activity> {
             List<Activity> list = new ArrayList<>();
 
             while (rs.next()){
-                Integer id = rs.getInt("idsubject");
-                String activityType = rs.getString("activityType");
-                Double weighted = rs.getDouble("weighted");
-                Date aux = rs.getDate( "deadLine" );
+                Integer id = rs.getInt(1);
+                String activityType = rs.getString(2);
+                Double weighted = rs.getDouble(3);
+                Date aux = rs.getDate( 4);
                 LocalDate deadLine = aux.toLocalDate();
-                Double score = rs.getDouble("score");
-                String state = rs.getString("state");
+                Double score = rs.getDouble(5) ;
+                String state = rs.getString(6);
 
-                int idSubject = rs.getInt("subject_idsubject");
+                int idSubject = rs.getInt(7);
 
-                String searchSubjectQuery = "SELECT * FROM subject WHERE id='" + idSubject + "'";
-                ResultSet rs2 = statement.executeQuery( searchSubjectQuery );
-
-                String nameSubject = rs2.getString("name");
-                Double finalScoreSubject = rs2.getDouble("finalScore");
-                int idSemester = rs2.getInt("semester_idsemester");
-
-                String searchSemesterQuery = "SELECT * FROM semester WHERE id='" + idSemester + "'";
-                ResultSet rs3 = statement.executeQuery( searchSemesterQuery );
-                Double semesterFinalScore = rs3.getDouble("finalScore");
-
-                Semester semester =new Semester(idSemester,semesterFinalScore);
-
-                Subject subject = new Subject(id,nameSubject,finalScoreSubject,semester);
-
-                list.add( new Activity(id,activityType,weighted,deadLine,score,state,subject));
+                list.add( new Activity(id,activityType,weighted,deadLine,score,state,idSubject));
             }
             return list;
         }catch (SQLException e){
@@ -83,32 +68,17 @@ public class ActivityDAO implements InterfaceDAO<Activity> {
             Activity activity = null;
 
             while (rs.next()){
-                Integer id = rs.getInt("idsubject");
-                String activityType = rs.getString("activityType");
-                Double weighted = rs.getDouble("weighted");
-                Date aux = rs.getDate( "deadLine" );
+                Integer id = rs.getInt(1);
+                String activityType = rs.getString(2);
+                Double weighted = rs.getDouble(3);
+                Date aux = rs.getDate( 4);
                 LocalDate deadLine = aux.toLocalDate();
-                Double score = rs.getDouble("score");
-                String state = rs.getString("state");
+                Double score = rs.getDouble(5);
+                String state = rs.getString(6);
 
-                int idSubject = rs.getInt("subject_idsubject");
+                int idSubject = rs.getInt(7);
 
-                String searchSubjectQuery = "SELECT * FROM subject WHERE id='" + idSubject + "'";
-                ResultSet rs2 = statement.executeQuery( searchSubjectQuery );
-
-                String nameSubject = rs2.getString("name");
-                Double finalScoreSubject = rs2.getDouble("finalScore");
-                int idSemester = rs2.getInt("semester_idsemester");
-
-                String searchSemesterQuery = "SELECT * FROM semester WHERE id='" + idSemester + "'";
-                ResultSet rs3 = statement.executeQuery( searchSemesterQuery );
-                Double semesterFinalScore = rs3.getDouble("finalScore");
-
-                Semester semester =new Semester(idSemester,semesterFinalScore);
-
-                Subject subject = new Subject(id,nameSubject,finalScoreSubject,semester);
-
-                activity = new Activity(id,activityType,weighted,deadLine,score,state,subject);
+                activity = new Activity(id,activityType,weighted,deadLine,score,state,idSubject);
             }
 
             return activity;
@@ -124,7 +94,7 @@ public class ActivityDAO implements InterfaceDAO<Activity> {
         LocalDate deadLine = activity.getDeadLine();
         Double score =activity.getScore();
         String state = activity.getState();
-        Subject subject = activity.getSubject();
+        int idSubject = activity.getIdSubject();
 
         try{
             Class.forName(DRIVER);
@@ -136,7 +106,7 @@ public class ActivityDAO implements InterfaceDAO<Activity> {
                 Statement statement = connection.createStatement();
         ){
             String query = "INSERT INTO activity VALUES('" + activityType  + "','" + weighted + "','" + deadLine + "','" +
-                    score  + "','" + state + "','" + subject.getId() + "')";
+                    score  + "','" + state + "','" + idSubject + "')";
 
             int rows = statement.executeUpdate( query );
 
