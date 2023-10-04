@@ -102,23 +102,23 @@ function showActivities(subjectId) {
     xhr2.open("GET","servlet-activity",true )
 
     xhr2.onreadystatechange = ()=>{
-
         if( xhr2.readyState === 4 && xhr2.status === 200 ){
-            const activities = JSON.parse( xhr.responseText )
+            const activities = JSON.parse( xhr2.responseText )
             activities.forEach( activity => {
-                const row = document.createElement("tr")
+                const row2 = document.createElement("tr")
 
                 const colActivityType = document.createElement("td")
                 colActivityType.appendChild( document.createTextNode( activity.activityType ) );
-                row.appendChild( colActivityType )
+                row2.appendChild( colActivityType )
 
                 const colWeighted = document.createElement("td")
                 colWeighted.appendChild( document.createTextNode(activity.weighted ))
-                row.appendChild( colWeighted )
+                row2.appendChild( colWeighted )
 
+                const dealLine = activity.deadLine
                 const colDeadLine = document.createElement("td")
-                colDeadLine.appendChild( document.createTextNode(activity.deadLine))
-                row.appendChild( colDeadLine )
+                colDeadLine.appendChild( document.createTextNode(`${dealLine.day}-${months[dealLine.month-1]}-${dealLine.year}`))
+                row2.appendChild( colDeadLine )
 
                 const colScore = document.createElement("td")
                 colScore.appendChild( document.createTextNode(activity.score))
@@ -128,10 +128,8 @@ function showActivities(subjectId) {
                 colState.appendChild( document.createTextNode(activity.state))
                 colState.appendChild( colDeadLine )
 
-                tbodyActivities.appendChild(row)
+                tbodyActivities.appendChild(row2)
             })
-        }else {
-            alert("hola")
         }
     }
 
